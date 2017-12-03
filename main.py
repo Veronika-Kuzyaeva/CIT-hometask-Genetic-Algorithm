@@ -21,12 +21,16 @@ def main(prng=None, display=False):
         items.append(([int(lines[i].split(" ")[0]), float(lines[i].split(" ")[1])], int(lines[i].split(" ")[2])))
         i=i+1
 
+    print(items)
+
     file.close()
 
     problem = inspyred.benchmarks.Knapsack((MAX_WEIGHT, MAX_VALUE), items, duplicates=False)
     ac = inspyred.swarm.ACS(prng, problem.components)
     ac.terminator = inspyred.ec.terminators.generation_termination
-
+    final_pop = ac.evolve(problem.constructor, problem.evaluator,
+                          maximize=problem.maximize, pop_size=50,
+                          max_generations=50)
     items2 = []
     reg = re.compile('[^0-9. ]')
 
